@@ -72,6 +72,7 @@ object ConnectionPool extends LogSupport {
    */
   def get(name: Any = DEFAULT_NAME): ConnectionPool = pools.synchronized {
     pools.getOrElse(name, {
+      if (name == 'named) println("ConnectionPool.get for missing 'name")
       val message = ErrorMessage.CONNECTION_POOL_IS_NOT_YET_INITIALIZED + "(name:" + name + ")"
       throw new IllegalStateException(message)
     })
@@ -91,6 +92,8 @@ object ConnectionPool extends LogSupport {
     factory: CPFactory = DEFAULT_CONNECTION_POOL_FACTORY,
     ec: ExecutionContext = DEFAULT_EXECUTION_CONTEXT
   ) {
+
+    if (name == 'named) println("ConnectionPool.add('named)")
 
     import scalikejdbc.JDBCUrl._
 
@@ -116,6 +119,7 @@ object ConnectionPool extends LogSupport {
           _factory.apply(url, user, password, settings)
       }
       pools.update(name, pool)
+      if (name == 'named) println("added to pools")
 
       // wait a little because rarely NPE occurs when immediately accessed.
       Thread.sleep(settings.warmUpTime)

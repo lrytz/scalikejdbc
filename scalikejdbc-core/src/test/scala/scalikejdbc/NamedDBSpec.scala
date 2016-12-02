@@ -10,12 +10,14 @@ import org.scalatest.concurrent.ScalaFutures
 import ExecutionContext.Implicits.global
 
 class NamedDBSpec extends FlatSpec with Matchers with BeforeAndAfter with Settings with LoanPattern with ScalaFutures {
+  println("NamedDBSpec constructor")
 
   val tableNamePrefix = "emp_NamedDBSpec" + System.currentTimeMillis().toString.substring(8)
 
   behavior of "NamedDB"
 
   it should "be available" in {
+    println("first test in NamedDBSpec")
     using(ConnectionPool.borrow('named)) { conn =>
       using(new DB(conn)) { db =>
         db should not be null
